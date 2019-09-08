@@ -29,7 +29,7 @@ dbConn.connect();
 app.get('/users', function (req, res) {
     dbConn.query('SELECT * FROM users', function (error, results, fields) {
         if (error) throw error;
-        return res.send({ error: false, data: results, message: 'users list.' });
+        return res.send({ error: false, data: results, message: 'users list.', request: req });
     });
 });
  
