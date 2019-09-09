@@ -29,3 +29,14 @@ export const getUserById = (req: any, res: any) => {
     res.json(data[0])
   })
 };
+
+export function validateEmailAndPassword(email: string, password: string){
+  //Lets go into our database and check if we really have this user.
+  
+  return true;
+}
+
+export function findUserIdForEmail(email: string)
+{
+  return "null";
+}
