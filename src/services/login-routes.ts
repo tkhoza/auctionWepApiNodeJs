@@ -12,12 +12,12 @@ export function loginRoute(req: Request, res: Response) {
           password = req.body.password;
 
     if (validateEmailAndPassword(email, password)) {
-       const userId = findUserIdForEmail(email);
+       const userId : any = findUserIdForEmail(email);
 
         const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
                 algorithm: 'RS256',
                 expiresIn: 120,
-                subject: userId
+                subject: userId,
             });
 
           // send the JWT back to the user

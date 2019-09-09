@@ -30,13 +30,43 @@ export const getUserById = (req: any, res: any) => {
   })
 };
 
+
 export function validateEmailAndPassword(email: string, password: string){
   //Lets go into our database and check if we really have this user.
   
+  var sql = `SELECT * FROM users WHERE email=${email} AND  password=${password} `;
+
+  db.query(sql, function (err: Error, data: any) {
+    if (err) {
+      return false;
+    }
+   
+    if(data == null)
+    {
+      return false;
+    }
+
+    return true;
+  })
+
   return true;
 }
 
 export function findUserIdForEmail(email: string)
 {
-  return "null";
+  var sql = `SELECT * FROM users WHERE email=${email}`;
+
+  db.query(sql, function (err: Error, data: any) {
+    if (err) {
+      return false;
+    }
+   
+    if(data == null)
+    {
+      return false;
+    }
+
+    return data.id;
+  })
+
 }
