@@ -20,11 +20,14 @@
     "typescript": "^3.6.2"
   },
   "nodemonConfig": {
-    "watch": ["src", "server.ts"],
+    "watch": [
+      "src",
+      "server.ts"
+    ],
     "ingore": [
       "*.sql"
     ],
     "exec": "ts-node server.ts",
     "ext": "js,ts"
-  } 
+  }
 }
