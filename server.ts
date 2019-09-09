@@ -1,4 +1,6 @@
 import express from 'express';
+//const cookieParser = require('cookie-parser');
+
 import { getCommentById, updateComment } from "./src/services/comments";
 import { getAllUsers, getUserById } from "./src/services/users";
 import { getProductById, updateProduct } from "./src/services/products";
