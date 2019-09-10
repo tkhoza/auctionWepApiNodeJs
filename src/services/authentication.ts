@@ -1,5 +1,5 @@
 import jwksRsa from 'jwks-rsa';
-const expressJwt = require('express-jwt');
+import expressJwt from 'express-jwt';
 
 export const checkIfAuthenticated = expressJwt({
     secret: jwksRsa.expressJwtSecret({
