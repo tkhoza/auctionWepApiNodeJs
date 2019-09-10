@@ -7,6 +7,7 @@ import { getCommentById, updateComment } from "./src/services/comments";
 import { getAllUsers, getUserById } from "./src/services/users";
 import { getProductById, updateProduct } from "./src/services/products";
 import { getUserProductById, updateUserProduct } from "./src/services/user_products";
+import { loginRoute } from './src/services/login-routes';
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -23,6 +24,11 @@ app.route('/users')
 app.get('/', function (_req, res) {
   return res.send({ error: false, message: 'Connected!!!' })
 });
+
+// login route
+app.post('/login', loginRoute);
+
+
 // Comment route
 app.get('/comment/:id', getCommentById);
 app.put('/updateComment', updateComment);

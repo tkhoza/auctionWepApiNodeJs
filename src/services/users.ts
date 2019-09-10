@@ -33,14 +33,14 @@ export const getUserById = (req: any, res: any) => {
 
 export function validateEmailAndPassword(email: string, password: string){
   //Lets go into our database and check if we really have this user.
-  
+
   var sql = `SELECT * FROM users WHERE email=${email} AND  password=${password} `;
 
   db.query(sql, function (err: Error, data: any) {
     if (err) {
       return false;
     }
-   
+
     if(data == null)
     {
       return false;
@@ -52,21 +52,20 @@ export function validateEmailAndPassword(email: string, password: string){
   return true;
 }
 
-export function findUserIdForEmail(email: string)
-{
-  var sql = `SELECT * FROM users WHERE email=${email}`;
+export const findUserIdForEmail = (req: any, res: any) => {
+  var email = req.body.email;
+  console.log(email);
+
+  if (!email) {
+    return res.status(500).send({ error: 'Invalid email' })
+  }
+  var sql = "SELECT * FROM users WHERE email='${email}'";
 
   db.query(sql, function (err: Error, data: any) {
     if (err) {
-      return false;
+      res.status(500).send({ error: 'Something failed!' })
+      
     }
-   
-    if(data == null)
-    {
-      return false;
-    }
-
-    return data.id;
+    console.log(res.json(data[0]));
   })
-
-}
+};
