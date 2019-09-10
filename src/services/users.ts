@@ -72,13 +72,22 @@ export function findUserIdForEmail(email: string)
 }
 
 export function createUser(user:User){
-   var sql = `INSERT INTO users SET ?${user}`;
-   
+
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date +' '+time;
+
+  var statement1 = 'INSERT INTO users (name, surname,phone, email, password,created_at)'
+  var statement2 = 'VALUES (' + '"' + user.firstName + '","'+ user.lastName+ '","'+ user.phone + '","'+ user.email + '","'+ user.password + '","'+ dateTime+ '")'; 
+ 
+  var sql =  statement1 + statement2;
+
    db.query(sql, function (err: Error, data: any) {
     if (err) {
       return null;
     }
-    
+
     return data;
   })
 }

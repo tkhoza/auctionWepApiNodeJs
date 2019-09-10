@@ -6,6 +6,7 @@ export class User {
         this.password = '';
         this.firstName='';
         this.lastName = '';
+        this.phone = '';
         this.token = '';
     }
 
@@ -14,5 +15,6 @@ export class User {
     password: string;
     firstName: string;
     lastName: string;
+    phone: string;
     token: string;
 }
