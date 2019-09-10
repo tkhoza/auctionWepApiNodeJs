@@ -2,7 +2,7 @@ import express from 'express';
 var cors = require('cors');
 
 //const cookieParser = require('cookie-parser');
-
+import { checkIfAuthenticated } from './src/services/authentication';
 import { getCommentById, updateComment } from "./src/services/comments";
 import { getAllUsers, getUserById } from "./src/services/users";
 import { getProductById, updateProduct } from "./src/services/products";
@@ -15,6 +15,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+//An example of using the checkIfAuthenticated function.
+app.route('/users')
+    .get(checkIfAuthenticated, getAllUsers);
+
 // default route
 app.get('/', function (_req, res) {
   return res.send({ error: false, message: 'Connected!!!' })
@@ -24,7 +28,7 @@ app.get('/comment/:id', getCommentById);
 app.put('/updateComment', updateComment);
 
 // Users route
-app.get("/users", getAllUsers);
+// app.get("/users", getAllUsers);
 app.get("/users/:id", getUserById);
 
 // User_product route
