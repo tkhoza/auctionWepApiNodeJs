@@ -7,6 +7,7 @@ import { getCommentById, updateComment } from "./src/services/comments";
 import { getAllUsers, getUserById } from "./src/services/users";
 import { getProductById, updateProduct } from "./src/services/products";
 import { getUserProductById, updateUserProduct } from "./src/services/user_products";
+import {registerRoute} from './src/services/register';
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -30,6 +31,7 @@ app.put('/updateComment', updateComment);
 // Users route
 // app.get("/users", getAllUsers);
 app.get("/users/:id", getUserById);
+app.post("/createUser",registerRoute)
 
 // User_product route
 app.get('/userProduct/:id', getUserProductById);

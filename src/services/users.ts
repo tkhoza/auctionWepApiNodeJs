@@ -1,5 +1,6 @@
 //@ts-ignore
 import db from "../connection/db";
+import { User } from '../Models/User';
 
 /* get method for fetch all users. */
 export const getAllUsers = (_req: any, res: any) => {
@@ -68,5 +69,16 @@ export function findUserIdForEmail(email: string)
 
     return data.id;
   })
+}
 
+export function createUser(user:User){
+   var sql = `INSERT INTO users SET ?${user}`;
+   
+   db.query(sql, function (err: Error, data: any) {
+    if (err) {
+      return null;
+    }
+    
+    return data;
+  })
 }
