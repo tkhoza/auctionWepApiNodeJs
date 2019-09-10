@@ -1,4 +1,6 @@
 import express from 'express';
+var cors = require('cors');
+
 //const cookieParser = require('cookie-parser');
 
 import { getCommentById, updateComment } from "./src/services/comments";
@@ -9,6 +11,7 @@ import { getUserProductById, updateUserProduct } from "./src/services/user_produ
 const port = process.env.PORT || 3000;
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
