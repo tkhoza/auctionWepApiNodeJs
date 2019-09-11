@@ -1,5 +1,6 @@
 //@ts-ignore
 import db from "../connection/db";
+import { User } from '../Models/User';
 
 /* get method for fetch all users. */
 export const getAllUsers = (_req: any, res: any) => {
@@ -88,39 +89,25 @@ export function validateEmailAndPassword(email: string, password: string){
     return data[0];
     //res.json(data[0])
   })
-};*/
+}*/
 
-export function findUserIdForEmail(email: string) : any {
+export function createUser(user:User){
 
- // const result = await db.query('SELECT * from users WHERE email = ?', [email]). 
-  /*if (!result[0].length < 1) {
-    throw new Error('Post with this id was not found');
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date +' '+time;
 
-  }*/
+  var statement1 = 'INSERT INTO users (name, surname,phone, email, password,created_at)'
+  var statement2 = 'VALUES (' + '"' + user.firstName + '","'+ user.lastName+ '","'+ user.phone + '","'+ user.email + '","'+ user.password + '","'+ dateTime+ '")'; 
+ 
+  var sql =  statement1 + statement2;
 
-  email = "\"" + email +"\"";
-  var sql = `SELECT * FROM users WHERE email=${email}`;
-
-   db.query(sql, function (err: Error, data: any){
+   db.query(sql, function (err: Error, data: any) {
     if (err) {
-      console.log(err);
-      //res.status(500).send({ error: 'Something failed!' })
+      return null;
     }
-    console.log(data)
+
     return data;
-    //res.json(data[0])
   })
 }
-
-getFromTable: function(table, callback) {
-  db.query('SELECT * FROM '+ table +';', function(err, result) {
-    if(err) 
-      // execute the callback for a null result and an error.
-      callback(err, null);
-    else if( !result )
-      callback(new Error('Error bij het ophalen van foto\'s'),null);
-    else
-      // execute the callback on the result
-      callback(null, result);
-    }.bind(this));
-  }
