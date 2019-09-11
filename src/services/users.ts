@@ -73,26 +73,6 @@ export const findUserIdForEmail = async (email: string) =>
   })
 }
 
-/*export const findUserIdForEmail = (req: any, res: any) => {
-  var email = req.body.email;
-  email = "\"" + email +"\"";
-
-  if (!email) {
-    return res.status(500).send({ error: 'Unknown ID!' })
-  }
-
-  var sql = `SELECT * FROM users WHERE email=${email}`;
-
-  return db.query(sql, function (err: Error, data: any) {
-    if (err) {
-      console.log(err);
-      res.status(500).send({ error: 'Something failed!' })
-    }
-    return data[0];
-    //res.json(data[0])
-  })
-}*/
-
 export function createUser(user:User){
 
   var today = new Date();
