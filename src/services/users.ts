@@ -54,22 +54,24 @@ export function validateEmailAndPassword(email: string, password: string){
   return true;
 }
 
-/*export function findUserIdForEmail(email: string): Observable<string> {
- 
-  email = "\"" + email +"\"";
-  var sql = `SELECT * FROM users WHERE email=${email}`;
+export const findUserIdForEmail = async (email: string) =>
+{
+   let stirngEmail= "\"" + email + "\"";
+  var sql = `SELECT * FROM users WHERE email=${stirngEmail}`;
 
-  db.query(sql, function (err: Error, data: any) {
+  db.query(sql, async (err: Error, data: any) => {
     if (err) {
-     // console.log(err);
-      return null;
+      return false;
     }
-    
-    let id = data[0].id.toString();
-    //console.log(id);
-    return id;
+   
+    if(data == null)
+    {
+      return false;
+    }
+
+    return await data;
   })
-};*/
+}
 
 /*export const findUserIdForEmail = (req: any, res: any) => {
   var email = req.body.email;
