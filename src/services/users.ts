@@ -68,7 +68,9 @@ export const loginRoute = async (req: Request, res: Response) => {
   }
 
   var stirngEmail= "\"" + email + "\"";
-  var sql = `SELECT * FROM users WHERE email=${stirngEmail}`;
+  var stirngPwd= "\"" + password + "\"";
+
+  var sql = `SELECT * FROM users WHERE email=${stirngEmail} AND password=${stirngPwd}`;
 
   db.query(sql, function (err: Error, data: any) {
       if (err) {
@@ -85,7 +87,8 @@ export const loginRoute = async (req: Request, res: Response) => {
         // send the JWT back to the user
         return res.status(200).json({
                 expiresIn: 120,
-                token:jwtBearerToken
+                token:jwtBearerToken,
+                user: data[0]
             });                         
     }
     else {
