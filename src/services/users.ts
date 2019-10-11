@@ -1,6 +1,11 @@
 //@ts-ignore
 import db from "../connection/db";
 import { User } from '../Models/User';
+import * as jwt from 'jsonwebtoken';
+import * as fs from 'fs';
+import {Request, Response} from 'express';
+
+const RSA_PRIVATE_KEY = fs.readFileSync('src/services/keys/private.key');
 
 /* get method for fetch all users. */
 export const getAllUsers = (_req: any, res: any) => {
@@ -54,24 +59,44 @@ export function validateEmailAndPassword(email: string, password: string){
   return true;
 }
 
-export const findUserIdForEmail = async (email: string) =>
-{
-   let stirngEmail= "\"" + email + "\"";
+export const loginRoute = async (req: Request, res: Response) => {
+  const email = req.body.email,
+  password = req.body.password;
+ 
+  if (!email || !password) {
+    return res.status(500).send({ error: 'Wrong email/Password!' })
+  }
+
+  var stirngEmail= "\"" + email + "\"";
   var sql = `SELECT * FROM users WHERE email=${stirngEmail}`;
 
-  db.query(sql, async (err: Error, data: any) => {
-    if (err) {
-      return false;
-    }
+  db.query(sql, function (err: Error, data: any) {
+      if (err) {
+        return  res.status(500);
+      }
    
-    if(data == null)
-    {
-      return false;
-    }
+      if (data) {
+          const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
+                algorithm: 'HS256',
+                expiresIn: 120,
+                subject: data[0].email,
+            });
 
-    return await data;
+        // send the JWT back to the user
+        return res.status(200).json({
+                expiresIn: 120,
+                token:jwtBearerToken
+            });                         
+    }
+    else {
+        // send status 401 Unauthorized
+        return res.status(401); 
+    }
   })
+
+  return res;
 }
+
 
 export function createUser(user:User){
 
