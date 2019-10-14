@@ -77,13 +77,12 @@ export const loginRoute = async (req: Request, res: Response) => {
         return  res.status(500);
       }
    
-      if (data) {
+      if (data[0] != null) {
           const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
                 algorithm: 'HS256',
                 expiresIn: 120,
                 subject: data[0].email,
             });
-
         // send the JWT back to the user
         return res.status(200).json({
                 expiresIn: 120,
@@ -93,7 +92,7 @@ export const loginRoute = async (req: Request, res: Response) => {
     }
     else {
         // send status 401 Unauthorized
-        return res.status(401); 
+        return res.status(200).send({ error: 'NotFound!' });
     }
   })
 
