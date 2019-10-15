@@ -4,10 +4,9 @@ var cors = require('cors');
 //const cookieParser = require('cookie-parser');
 import { checkIfAuthenticated } from './src/services/authentication';
 import { getCommentById, updateComment } from "./src/services/comments";
-import { getAllUsers, getUserById,loginRoute } from "./src/services/users";
+import { getAllUsers, getUserById,loginRoute ,registerRoute} from "./src/services/users";
 import { getProductById, updateProduct } from "./src/services/products";
 import { getUserProductById, updateUserProduct } from "./src/services/user_products";
-import {registerRoute} from './src/services/register';
 
 const port = process.env.PORT || 3000;
 const app = express();

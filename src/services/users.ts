@@ -1,6 +1,5 @@
 //@ts-ignore
 import db from "../connection/db";
-import { User } from '../Models/User';
 import * as jwt from 'jsonwebtoken';
 import * as fs from 'fs';
 import {Request, Response} from 'express';
@@ -81,7 +80,7 @@ export const loginRoute = async (req: Request, res: Response) => {
           const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
                 algorithm: 'HS256',
                 expiresIn: 120,
-                subject: data[0].email,
+                subject: 'login',
             });
         // send the JWT back to the user
         return res.status(200).json({
@@ -100,7 +99,7 @@ export const loginRoute = async (req: Request, res: Response) => {
 }
 
 
-export function createUser(user:User){
+export const registerRoute = async (req: Request, res: Response) => { 
 
   var today = new Date();
   var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -108,15 +107,55 @@ export function createUser(user:User){
   var dateTime = date +' '+time;
 
   var statement1 = 'INSERT INTO users (name, surname,phone, email, password,created_at)'
-  var statement2 = 'VALUES (' + '"' + user.firstName + '","'+ user.lastName+ '","'+ user.phone + '","'+ user.email + '","'+ user.password + '","'+ dateTime+ '")'; 
+  var statement2 = 'VALUES (' + '"' + req.body.firstName + '","'+ req.body.lastName+ '","'+ req.body.phone + '","'+ req.body.email + '","'+ req.body.password + '","'+ dateTime+ '")'; 
  
   var sql =  statement1 + statement2;
 
    db.query(sql, function (err: Error, data: any) {
+
     if (err) {
-      return null;
+      return res.status(500).send({ error: err.message });
     }
 
-    return data;
+    if (data.affectedRows != 0) {
+        let user = getUserByEmail(req.body.email);
+        console.log(user);
+
+        const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
+            algorithm: 'HS256',
+            expiresIn: 120,
+            subject: "registered",
+        });
+
+        return res.status(200).json({
+                expiresIn: 120,
+                token:jwtBearerToken,
+                user: data[0]
+        });                         
+    }
+    else {
+        return res.status(500).send({ error: 'Failed to register user!' });
+    }
   })
+
+  return res;
 }
+
+export const getUserByEmail = async (email:string) => {
+  if (!email) {
+    return 'Unknown email!';
+  }
+
+  var sql = `SELECT * FROM users WHERE email=${email}`;
+
+ var res = await db.query(sql, function (err: Error, data: any) {
+    if (err) {
+      return err.message;
+    }
+    
+    return data[0];
+
+  })
+
+  return res;
+};
